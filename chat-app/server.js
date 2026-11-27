@@ -19,6 +19,9 @@ app.use(cors({
 // Routes d'authentification
 app.use("/api/auth", require("./routes/auth"));
 
+//Route du salon de conversation
+app.use("/api/conversations", require("./routes/chatRooms"));
+
 // Connexion à la base de données
 mongoose
   .connect(process.env.MONGODB_URI)

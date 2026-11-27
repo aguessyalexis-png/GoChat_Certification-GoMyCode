@@ -1,15 +1,33 @@
-//pour valider les jetons JWT et protéger les routes.
-const express = require("express");
-const router = express.Router();
+//Vérifie le JWT et identifie l'utilisateur
+const jwt = require("jsonwebtoken");
 
-const authMiddleware = require("../middleware/authMiddleware");
+// Vérification du token JWT
+const authMiddleware = (req, res, next) => {
+  try {
+    const authHeader = req.headers.authorization;
 
-// Route protégée
-router.get("/", authMiddleware, (req, res) => {
-  res.status(200).json({
-    message: "Bienvenue dans tes conversations !",
-    userId: req.userId
-  });
-});
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({
+        message: "Authentification requise."
+      });
+    }
 
-module.exports = router;
+    const token = authHeader.split(" ")[1];
+
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET
+    );
+
+    req.userId = decoded.userId;
+
+    next();
+
+  } catch (error) {
+    return res.status(401).json({
+      message: "Jeton invalide ou expiré."
+    });
+  }
+};
+
+module.exports = authMiddleware;

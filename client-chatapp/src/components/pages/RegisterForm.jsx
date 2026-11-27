@@ -5,9 +5,8 @@ import Form from "react-bootstrap/Form";
 import { registerUser } from "../../Services/authService";
 import AvatarModal from "../common/avatarModal";
 
-
 function RegisterForm() {
-  const [showAvatars, setShowAvatars] = useState(false);// props pour gérer les avatars
+  const [showAvatars, setShowAvatars] = useState(false); // props pour gérer les avatars
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -143,7 +142,7 @@ function RegisterForm() {
           <Form.Control
             required
             type="text"
-            name="Phone"
+            name="phone"
             placeholder="+225 0700000000"
             value={formData.phone}
             onChange={handleChange}
